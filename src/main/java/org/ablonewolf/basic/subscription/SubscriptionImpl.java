@@ -49,7 +49,6 @@ public class SubscriptionImpl implements Subscription {
                 this.subscriber.onComplete();
                 this.isCancelled = true;
             }
-            return;
         }
 
     }
