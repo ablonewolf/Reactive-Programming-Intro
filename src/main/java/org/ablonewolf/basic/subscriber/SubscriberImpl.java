@@ -24,7 +24,7 @@ public class SubscriberImpl implements Subscriber<String> {
 
     @Override
     public void onError(Throwable throwable) {
-        logger.error("error", throwable);
+        logger.error("error: {}", throwable.getMessage());
     }
 
     @Override
