@@ -62,6 +62,9 @@ public class Demo {
         Thread.sleep(Duration.ofSeconds(3));
     }
 
+    /**
+     * method to demonstrate when the subscriber asks for zero items
+     */
     private static void demonstrateWhenSubscriberAsksForZeroItems() {
         initiateSubscription();
         logger.info("Inside the method where the subscriber is asking for zero items.");
