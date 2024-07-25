@@ -16,7 +16,7 @@ public class SubscriptionImpl implements Subscription {
     public static final Integer MAX_ITEMS = 10;
     private final Subscriber<? super String> subscriber;
     private final Faker faker;
-    private Boolean isCancelled;
+    private Boolean isCancelled = false;
     private Integer count = 0;
 
     @Override
@@ -24,6 +24,13 @@ public class SubscriptionImpl implements Subscription {
         if (isCancelled) {
             return;
         }
+
+        if (requested > MAX_ITEMS) {
+            this.subscriber.onError(new RuntimeException("Number of requested items exceeds maximum allowed"));
+            this.isCancelled = true;
+            return;
+        }
+
         logger.info("Subscriber has requested {} items", requested);
         for (int index = 0; index < requested && count < MAX_ITEMS; index++) {
             this.subscriber.onNext(this.faker.internet().emailAddress());
