@@ -26,9 +26,21 @@ public class SubscriptionImpl implements Subscription {
         }
 
         if (requested > MAX_ITEMS) {
-            this.subscriber.onError(new RuntimeException("Number of requested items exceeds maximum allowed"));
+            this.subscriber.onError(new RuntimeException("Number of requested items exceeds maximum allowed."));
             this.isCancelled = true;
             return;
+        }
+
+        if (requested < 0) {
+            this.subscriber.onError(new RuntimeException("Number of requested items cannot be negative."));
+            this.isCancelled = true;
+            return;
+        }
+
+        if (requested == 0) {
+            logger.info("Subscriber has asked for zero items. Therefore completing the subscription");
+            this.subscriber.onComplete();
+            this.isCancelled = true;
         }
 
         logger.info("Subscriber has requested {} items", requested);
