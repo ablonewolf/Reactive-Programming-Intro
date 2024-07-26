@@ -1,9 +1,16 @@
 package org.ablonewolf.common;
 
+import com.github.javafaker.Faker;
+import lombok.Getter;
 import org.reactivestreams.Subscriber;
 
 public class Util {
 
+    /**
+     * using a Faker instance to generate random fake names for various items
+     */
+    @Getter
+    private static final Faker faker = Faker.instance();
     /**
      * method for returning a new instance of default subscriber
      *
@@ -13,4 +20,5 @@ public class Util {
     public static <T> Subscriber<T> subscriber(String name) {
         return new DefaultSubscriber<>(name);
     }
+
 }
