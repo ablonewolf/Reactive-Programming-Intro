@@ -1,4 +1,4 @@
-package org.ablonewolf.reactiveStreams;
+package org.ablonewolf.mono;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

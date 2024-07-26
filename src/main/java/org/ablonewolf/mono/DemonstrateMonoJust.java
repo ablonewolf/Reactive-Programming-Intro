@@ -1,4 +1,4 @@
-package org.ablonewolf.reactiveStreams;
+package org.ablonewolf.mono;
 
 import org.ablonewolf.basic.subscriber.SubscriberImpl;
 import reactor.core.publisher.Mono;
