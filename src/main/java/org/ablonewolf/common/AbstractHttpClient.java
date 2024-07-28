@@ -12,7 +12,7 @@ public abstract class AbstractHttpClient {
     protected final HttpClient httpClient;
 
     public AbstractHttpClient() {
-        var loopResources = LoopResources.create("resource", 1, true);
+        var loopResources = LoopResources.create("worker_thread", 1, true);
         this.httpClient = HttpClient.create().runOn(loopResources).baseUrl(BASE_URL);
     }
 }
