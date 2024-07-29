@@ -19,7 +19,6 @@ public class Util {
 
     /**
      * method for returning a new instance of default subscriber
-     *
      * @param name: the name of the subscriber assigned by the publisher
      * @return default subscriber
      */
