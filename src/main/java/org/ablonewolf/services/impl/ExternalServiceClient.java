@@ -1,4 +1,4 @@
-package org.ablonewolf.clients;
+package org.ablonewolf.services.impl;
 
 import org.ablonewolf.common.AbstractHttpClient;
 import reactor.core.publisher.Mono;

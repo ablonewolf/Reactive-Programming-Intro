@@ -1,6 +1,6 @@
 package org.ablonewolf.mono;
 
-import org.ablonewolf.clients.ExternalServiceClient;
+import org.ablonewolf.services.impl.ExternalServiceClient;
 import org.ablonewolf.common.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
