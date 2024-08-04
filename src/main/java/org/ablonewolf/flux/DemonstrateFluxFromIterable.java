@@ -5,6 +5,9 @@ import reactor.core.publisher.Flux;
 
 import java.util.List;
 
+/**
+ * demonstrated how to create a flux from an iterable object.
+ */
 public class DemonstrateFluxFromIterable {
 
     public static void main(String[] args) {

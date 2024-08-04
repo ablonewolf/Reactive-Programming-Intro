@@ -3,6 +3,9 @@ package org.ablonewolf.flux;
 import org.ablonewolf.common.Util;
 import reactor.core.publisher.Flux;
 
+/**
+ * demonstrating the process of pairing multiple subscribers with a Flux
+ */
 public class DemonstrateMultipleSubscribers {
 
     public static void main(String[] args) {
