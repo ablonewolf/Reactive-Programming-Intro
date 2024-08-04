@@ -3,6 +3,9 @@ package org.ablonewolf.flux;
 import org.ablonewolf.common.Util;
 import reactor.core.publisher.Flux;
 
+/**
+ * demonstrate how to create a Flux from the just method
+ */
 public class DemonstrateFluxJust {
 
     public static void main(String[] args) {
