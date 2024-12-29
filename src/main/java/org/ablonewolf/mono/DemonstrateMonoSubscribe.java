@@ -15,14 +15,14 @@ public class DemonstrateMonoSubscribe {
         var mono = Mono.just("A demo string");
         Runnable completeMessage = () -> logger.info("completed");
         mono.subscribe(item -> logger.info("received item: {}", item),
-                       error -> logger.error("error occurred, details is: {}", error.getMessage()),
-                       completeMessage);
+            error -> logger.error("error occurred, details is: {}", error.getMessage()),
+            completeMessage);
 
         Mono<Integer> integerMono = Mono.just(10)
-                .map(item -> item / 0);
+            .map(item -> item / 0);
 
         integerMono.subscribe(item -> logger.info("received item {}", item),
-                              error -> logger.error("error occurred, details are: {}", error.getLocalizedMessage()),
-                              completeMessage);
+            error -> logger.error("error occurred, details are: {}", error.getLocalizedMessage()),
+            completeMessage);
     }
 }
