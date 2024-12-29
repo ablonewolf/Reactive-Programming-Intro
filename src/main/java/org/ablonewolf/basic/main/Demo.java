@@ -1,7 +1,7 @@
 package org.ablonewolf.basic.main;
 
-import org.ablonewolf.basic.publisher.PublisherImpl;
-import org.ablonewolf.basic.subscriber.SubscriberImpl;
+import org.ablonewolf.basic.publisher.StringPublisher;
+import org.ablonewolf.basic.subscriber.StringSubscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +15,7 @@ import java.time.Duration;
  * 4. publisher can send the error signal to indicate something is wrong
  */
 public class Demo {
-    private static SubscriberImpl subscriber;
+    private static StringSubscriber subscriber;
     public static final Logger logger = LoggerFactory.getLogger(Demo.class);
 
     public static void main(String[] args) {
@@ -37,8 +37,8 @@ public class Demo {
      * and initiate the subscription between the two
      */
     private static void initiateSubscription() {
-        PublisherImpl publisher = new PublisherImpl();
-        subscriber = new SubscriberImpl();
+        StringPublisher publisher = new StringPublisher();
+        subscriber = new StringSubscriber();
 
         publisher.subscribe(subscriber);
     }

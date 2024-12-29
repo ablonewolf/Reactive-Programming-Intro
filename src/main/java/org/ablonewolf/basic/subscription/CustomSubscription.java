@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public class SubscriptionImpl implements Subscription {
+public class CustomSubscription implements Subscription {
 
-    public static final Logger logger = LoggerFactory.getLogger(SubscriptionImpl.class);
+    public static final Logger logger = LoggerFactory.getLogger(CustomSubscription.class);
     public static final Integer MAX_ITEMS = 10;
     private final Subscriber<? super String> subscriber;
     private final Faker faker;

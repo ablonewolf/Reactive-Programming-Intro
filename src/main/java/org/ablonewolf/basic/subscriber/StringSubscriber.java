@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Getter
-public class SubscriberImpl implements Subscriber<String> {
+public class StringSubscriber implements Subscriber<String> {
 
-    public static final Logger logger = LoggerFactory.getLogger(SubscriberImpl.class);
+    public static final Logger logger = LoggerFactory.getLogger(StringSubscriber.class);
     private Subscription subscription;
 
     @Override

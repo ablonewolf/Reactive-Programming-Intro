@@ -1,6 +1,6 @@
 package org.ablonewolf.mono;
 
-import org.ablonewolf.basic.subscriber.SubscriberImpl;
+import org.ablonewolf.basic.subscriber.StringSubscriber;
 import reactor.core.publisher.Mono;
 
 /**
@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 public class DemonstrateMonoJust {
     public static void main(String[] args) {
         var mono = Mono.just("A demo string");
-        var subscriber = new SubscriberImpl();
+        var subscriber = new StringSubscriber();
 
         mono.subscribe(subscriber);
 
