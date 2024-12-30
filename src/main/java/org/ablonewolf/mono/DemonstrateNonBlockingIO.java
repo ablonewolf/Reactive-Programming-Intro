@@ -18,7 +18,7 @@ public class DemonstrateNonBlockingIO {
 
         logger.info("Starting the Non-BlockingIO operation.");
 
-        for (Integer index = 1; index <= 20; index++) {
+        for (int index = 1; index <= 20; index++) {
             client.getProductName(index)
                     .subscribe(Util.subscriber("Product Consuming subscriber"));
         }
