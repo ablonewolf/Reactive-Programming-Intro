@@ -24,7 +24,7 @@ public class DefaultSubscriber<T> implements Subscriber<T> {
 
     @Override
     public void onError(Throwable throwable) {
-        logger.error("{} faced an error, error message is {}.", this.name, throwable.getMessage());
+        logger.error("{} faced an error, error message is: '{}'.", this.name, throwable.getMessage());
     }
 
     @Override
