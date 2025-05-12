@@ -1,6 +1,7 @@
 package org.ablonewolf.services.impl;
 
 import org.ablonewolf.common.AbstractHttpClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -14,5 +15,12 @@ public class ExternalServiceClient extends AbstractHttpClient {
                 .responseContent()
                 .asString()
                 .next();
+    }
+
+    public Flux<String> getStreamOfNames() {
+        return this.httpClient.get()
+                .uri("/demo02/name/stream")
+                .responseContent()
+                .asString();
     }
 }
