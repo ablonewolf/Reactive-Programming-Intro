@@ -39,6 +39,7 @@ public class DemonstrateFluxGenerate {
 					synchronousSink.next(countryName);
 				})
 				.takeUntil(countryName -> Objects.equals(countryName, "Canada"))
+				.take(50)
 				.subscribe(Util.subscriber("Country Subscriber"));
 	}
 }
