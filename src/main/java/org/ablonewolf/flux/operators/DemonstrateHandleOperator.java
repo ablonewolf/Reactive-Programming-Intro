@@ -4,22 +4,19 @@ import org.ablonewolf.common.Util;
 import reactor.core.publisher.Flux;
 
 /**
- * Demonstrates the use of the handle operator in Project Reactor's Flux API.
+ * Demonstrates the usage of the Reactor `handle` operator by applying custom logic
+ * to process and emit elements in a reactive stream.
+ * The class showcases two main examples:
+ * 1. Transforming a range of integers based on conditional logic using the `handle` operator.<br>
+ * 2. Generating country names and using the `handle` operator to filter and complete
+ *    the stream based on specific criteria.<br>
  * <p>
- * The handle operator provides a mechanism to transform or filter the elements in Flux
- * based on a custom business logic defined within the handle method.
- * <p>
- * In this example:
- * - A range of integers from 1 to 50 are emitted by the Flux. <br>
- * - The handle method processes each emitted item, applying transformation logic
- * based on whether the item is even or odd. <br>
- * - If the item is even, its square is emitted downstream. <br>
- * - If the item is odd, its value is multiplied by 3 and emitted downstream. <br>
- * - The sink is also capable of completing the flux or ignoring specific values. <br>
- * - The resulting sequence is cast to an Integer to match type requirements for subscription. <br>
- * - The transformed flux is subscribed to using a custom subscriber implementation
- * defined via the {@code Util.subscriber} method, which displays the processed items
- * in the console.
+ * Key components:
+ * - `Flux.range()`: Generates a range of integers to be processed.<br>
+ * - `Flux.generate()`: Generates synchronous country names for processing.<br>
+ * - `handle()`: Allows custom logic to be applied, controlling how items are emitted or filtered.<br>
+ * - `cast()`: Casts elements in the stream to a specific type as needed.<br>
+ * - `Util.subscriber(String)`: Subscribes to the stream with a named subscriber for monitoring and logging.<br>
  */
 public class DemonstrateHandleOperator {
 
@@ -35,5 +32,24 @@ public class DemonstrateHandleOperator {
 				})
 				.cast(Integer.class)
 				.subscribe(Util.subscriber("Integer Subscriber"));
+
+		generateCountryName();
+	}
+
+	private static void generateCountryName() {
+		Flux.generate(synchronousSink -> {
+					var countryName = Util.getFaker().country().name();
+					synchronousSink.next(countryName);
+				})
+				.cast(String.class)
+				.handle((item, synchronousSink) -> {
+					if (item.equalsIgnoreCase("canada")) {
+						synchronousSink.next(item);
+						synchronousSink.complete();
+					} else {
+						synchronousSink.next(item);
+					}
+				})
+				.subscribe(Util.subscriber("Country Subscriber"));
 	}
 }
