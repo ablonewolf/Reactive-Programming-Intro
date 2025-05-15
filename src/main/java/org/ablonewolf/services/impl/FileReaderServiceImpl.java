@@ -11,10 +11,24 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 
+/**
+ * A service implementation for reading files with a reactive approach.
+ * This class implements the {@link FileReaderService} interface and provides
+ * functionality to read files asynchronously line by line, using Project Reactor's
+ * {@link Flux}.
+ */
 public class FileReaderServiceImpl implements FileReaderService {
 
 	private static final Logger log = LoggerFactory.getLogger(FileReaderServiceImpl.class);
 
+	/**
+	 * Reads the content of a file located at the given path line by line in a reactive manner.
+	 * Each line is emitted as a signal in the returned Flux. The reading stops when all lines
+	 * are read, or upon a cancellation request from the subscriber.
+	 *
+	 * @param path the path of the file to be read
+	 * @return a Flux emitting each line of the file as a String
+	 */
 	@Override
 	public Flux<String> read(Path path) {
 		return Flux.create(fluxSink -> {
