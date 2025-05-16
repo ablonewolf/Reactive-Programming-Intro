@@ -2,7 +2,7 @@ package org.ablonewolf.flux;
 
 import org.ablonewolf.basic.subscriber.StringSubscriber;
 import org.ablonewolf.services.FileReaderService;
-import org.ablonewolf.services.impl.FileReaderServiceImpl;
+import org.ablonewolf.services.impl.FileReaderServiceUsingFluxCreate;
 
 import java.nio.file.Path;
 
@@ -12,7 +12,7 @@ public class DemonstrateFileReadingWithFluxCreate {
 
 	public static void main(String[] args) {
 		var stringSubscriber = new StringSubscriber();
-		FileReaderService fileReaderService = new FileReaderServiceImpl();
+		FileReaderService fileReaderService = new FileReaderServiceUsingFluxCreate();
 
 		fileReaderService.read(PATH.resolve("sample_file.txt"))
 				.subscribe(stringSubscriber);

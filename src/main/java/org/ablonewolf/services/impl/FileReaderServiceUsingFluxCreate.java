@@ -17,9 +17,9 @@ import java.util.Objects;
  * functionality to read files asynchronously line by line, using Project Reactor's
  * {@link Flux}.
  */
-public class FileReaderServiceImpl implements FileReaderService {
+public class FileReaderServiceUsingFluxCreate implements FileReaderService {
 
-	private static final Logger log = LoggerFactory.getLogger(FileReaderServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(FileReaderServiceUsingFluxCreate.class);
 
 	/**
 	 * Reads the content of a file located at the given path line by line in a reactive manner.
