@@ -1,4 +1,4 @@
-package org.ablonewolf.flux.operators;
+package org.ablonewolf.operators;
 
 import org.ablonewolf.common.Util;
 import reactor.core.publisher.Flux;

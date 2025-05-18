@@ -1,4 +1,4 @@
-package org.ablonewolf.flux.operators;
+package org.ablonewolf.operators;
 
 import org.ablonewolf.common.Util;
 import org.slf4j.Logger;
