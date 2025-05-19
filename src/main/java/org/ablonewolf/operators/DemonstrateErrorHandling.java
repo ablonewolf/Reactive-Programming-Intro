@@ -127,14 +127,18 @@ public class DemonstrateErrorHandling {
 	private static Flux<Integer> getNumberStream() {
 		return Flux.range(1, 54)
 				.handle((item, sink) -> {
-					switch (item % 6) {
-						case 0 -> sink.next(item / 0); // intentionally throwing error
-						case 1 -> sink.next(item);
-						case 2 -> sink.next(item * 2);
-						case 3 -> sink.next(item * 3);
-						case 4 -> sink.next(item * 4);
-						case 5 -> sink.next(item * 5);
-						default -> sink.complete();
+					try {
+						switch (item % 6) {
+							case 0 -> sink.next(item / 0); // intentionally throwing error
+							case 1 -> sink.next(item);
+							case 2 -> sink.next(item * 2);
+							case 3 -> sink.next(item * 3);
+							case 4 -> sink.next(item * 4);
+							case 5 -> sink.next(item * 5);
+							default -> sink.complete();
+						}
+					} catch (Exception ex) {
+						sink.error(ex);
 					}
 				});
 	}
