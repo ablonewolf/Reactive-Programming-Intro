@@ -1,66 +1,38 @@
 package org.ablonewolf.hotPublishers;
 
 import org.ablonewolf.common.Util;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
-
-import java.time.Duration;
 
 /**
- * Demonstrates the concept of a hot publisher in project reactor or reactive programming.
- * A hot publisher allows multiple subscribers to share the same stream of data,
- * emitting items continuously irrespective of whether subscribers are actively listening.
+ * Demonstrates the behavior of a hot publisher using a shared movie stream.
  * <p>
- * This class uses a simulated movie streaming example where the movie scenes are generated
- * as a reactive Flux stream. The stream is shared among subscribers to simulate a scenario
- * where multiple viewers (subscribers) watch the same content at potentially different
- * starting points.
+ * This class simulates a scenario where multiple subscribers join a single
+ * movie stream, but at different times, showing how a hot publisher shares
+ * emission among subscribers without replaying missed events for late subscribers.
  * <p>
- * Key functionalities include:<br>
- * - Sharing a continuous reactive data stream among multiple subscribers.<br>
- * - Delayed scene generation to mimic real-time streaming.<br>
- * - Demonstrating late subscription by allowing subscribers to join with a delay.
+ * Features:<br>
+ * - Utilizes the "MovieTheatre.getMovieStream()" method to create a Flux of movie scenes.<br>
+ * - Converts the cold stream into a hot stream using the "share()" operator, enabling
+ *   multiple subscribers to observe emissions in real-time.<br>
+ * - Demonstrates late subscription where a new subscriber does not receive earlier events.<br>
  * <p>
- * The movie stream, when shared, preserves its continuous emission flow and does not restart
- * for subsequent subscribers. Each subscriber consumes the stream from the current emitted
- * point in time.
+ * Usage Details:<br>
+ * - The first subscriber ("First Watcher") subscribes to the movie stream as it begins.<br>
+ * - After 5 seconds, a second subscriber ("Second Watcher") joins, demonstrating that
+ *   it only receives the events being emitted from the time of its subscription.
+ * - The program then continues the simulation for 22 seconds in total.
  */
 public class DemonstrateHotPublisher {
 
-	private static final Logger log = LoggerFactory.getLogger(DemonstrateHotPublisher.class);
-
 	public static void main(String[] args) {
-		var movieStream = getMovieStream().share();
+		var movieStream = MovieTheatre.getMovieStream().share();
 
 		movieStream.subscribe(Util.subscriber("First Watcher"));
 
-		Util.sleepSeconds(5L);
+		Util.sleepSeconds(15L);
 
 		movieStream.subscribe(Util.subscriber("Second Watcher"));
 
-		Util.sleepSeconds(22L);
+		Util.sleepSeconds(10L);
 	}
 
-	/**
-	 * Generates a stream of movie scenes with a delay between each scene.
-	 * The stream is limited to 50 scenes, with each scene represented as a string.
-	 *
-	 * @return a Flux of strings, where each string represents a movie scene
-	 */
-	private static Flux<String> getMovieStream() {
-		return Flux.generate(() -> {
-							log.info("Received the request to watch the movie.");
-							return 1;
-						},
-						(state, sink) -> {
-							var scene = "Movie Scene " + state;
-							log.info("Playing {}", scene);
-							sink.next(scene);
-							return ++state;
-						})
-				.take(50)
-				.delayElements(Duration.ofMillis(500))
-				.cast(String.class);
-	}
 }
