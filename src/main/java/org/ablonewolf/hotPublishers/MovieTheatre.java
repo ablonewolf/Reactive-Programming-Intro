@@ -33,7 +33,6 @@ public final class MovieTheatre {
 							sink.next(scene);
 							return ++state;
 						})
-				.take(50)
 				.delayElements(Duration.ofMillis(500))
 				.cast(String.class);
 	}
