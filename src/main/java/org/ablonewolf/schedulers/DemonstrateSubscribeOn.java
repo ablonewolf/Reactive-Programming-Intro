@@ -23,7 +23,7 @@ import org.ablonewolf.common.Util;
 public class DemonstrateSubscribeOn {
 
 	public static void main(String[] args) {
-		var numberFlux = NumberFlux.getNumberFlux();
+		var numberFlux = NumberFlux.getNumberFluxSubscribedOn();
 
 		Runnable firstTask = () -> numberFlux.subscribe(Util.subscriber("First Number Subscriber"));
 		Runnable secondTask = () -> numberFlux.subscribe(Util.subscriber("Second Number Subscriber"));

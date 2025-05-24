@@ -6,30 +6,40 @@ import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
 /**
- * A utility class to provide a reactive stream of integers using Project Reactor's Flux.
+ * Utility class for creating reactive streams of integers and demonstrating reactive programming concepts
+ * such as `subscribeOn` and `publishOn` operators with Project Reactor's Flux.
+ * This class provides methods to generate Flux with specific threading behaviors, allowing subscribers
+ * to observe different thread execution patterns.
  * <p>
- * The {@code NumberFlux} class demonstrates the usage of a Flux that emits a range of integers
- * and applies a variety of reactive operations, including scheduling, logging, and event hooks.
- * It facilitates understanding thread behavior, event order, and publisher-subscriber interactions
- * within a reactive programming context.
+ * The class is designed to emit a predefined sequence of integers and log events during the emission
+ * and subscription process, showcasing reactive stream operations with threading models.
  * <p>
- * Features:<br>
- * - Emission of integers from 0 to 9 using {@code Flux.create}.<br>
- * - Logs emitted values and timestamps at various stages of the flux creation and processing pipeline.<br>
- * - Uses {@code Schedulers.boundedElastic()} for asynchronous execution of subscription logic.<br>
- * - Includes {@code doFirst} hooks to log messages in the caller thread before subscription and
- * before switching to the specified thread pool.<br>
- * - Supports event-driven callbacks with {@code doOnNext} to handle elements as they are emitted.
+ * Key functionalities:<br>
+ * - Provides a Flux {@code getNumberFluxSubscribedOn} with the subscription process executed asynchronously
+ * using the {@code subscribeOn} operator.<br>
+ * - Provides a Flux {@code getNumberFluxPublishOn} where elements are emitted on the caller thread but
+ * transferred to a different thread pool for downstream processing using the {@code publishOn} operator.<br>
+ * - Emits a predefined maximum set of integer values.<br>
+ * - Logs subscriber notifications and thread pool transitions during stream execution.
  * <p>
- * This class is immutable and serves as a utility; it is not designed to be instantiated.
+ * This class is final to ensure that its utility methods and behaviors cannot be modified through inheritance.
  */
 public final class NumberFlux {
-
 	private static final Logger log = LoggerFactory.getLogger(NumberFlux.class);
+	private static final int MAX_NUMBERS = 10;
+	private static final String THREAD_POOL_MESSAGE = "Passing to a different Thread pool.";
+	private static final String SUBSCRIBER_MESSAGE =
+			"It will be printed inside the caller thread as now the subscriber will subscribe to the publisher";
 
-	public static Flux<Integer> getNumberFlux() {
+	public static Flux<Integer> getNumberFluxSubscribedOn() {
+		return createBaseNumberFlux()
+				.subscribeOn(Schedulers.boundedElastic())
+				.doFirst(NumberFlux::printSubscriberNotification);
+	}
+
+	private static Flux<Integer> createBaseNumberFlux() {
 		return Flux.create(fluxSink -> {
-					for (int i = 0; i < 10; i++) {
+					for (int i = 0; i < MAX_NUMBERS; i++) {
 						log.info("Emitting number {}", i);
 						fluxSink.next(i);
 					}
@@ -37,12 +47,13 @@ public final class NumberFlux {
 				})
 				.cast(Integer.class)
 				.doOnNext(value -> log.info("Number generated: {}", value))
-				.doFirst(() -> log.info("Passing to a different Thread pool."))
-				.subscribeOn(Schedulers.boundedElastic())
-				.doFirst(() -> log.info("It will be printed inside the caller thread " +
-						"as now the subscriber will subscribe to the publisher"));
+				.doFirst(() -> log.info(THREAD_POOL_MESSAGE));
 	}
 
 	private NumberFlux() {
+	}
+
+	private static void printSubscriberNotification() {
+		log.info(SUBSCRIBER_MESSAGE);
 	}
 }
