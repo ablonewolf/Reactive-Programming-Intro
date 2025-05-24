@@ -37,6 +37,12 @@ public final class NumberFlux {
 				.doFirst(NumberFlux::printSubscriberNotification);
 	}
 
+	public static Flux<Integer> getNumberFluxPublishOn() {
+		return createBaseNumberFlux()
+				.doFirst(NumberFlux::printSubscriberNotification)
+				.publishOn(Schedulers.parallel());
+	}
+
 	private static Flux<Integer> createBaseNumberFlux() {
 		return Flux.create(fluxSink -> {
 					for (int i = 0; i < MAX_NUMBERS; i++) {
