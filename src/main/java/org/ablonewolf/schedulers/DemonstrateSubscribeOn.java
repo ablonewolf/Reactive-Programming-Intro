@@ -1,47 +1,29 @@
 package org.ablonewolf.schedulers;
 
 import org.ablonewolf.common.Util;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Schedulers;
 
 /**
- * Demonstrates the use of the `subscribeOn` operator in Project Reactor
- * to control which thread pool is responsible for subscribing to a Flux.
+ * Demonstrates the usage of reactive streams and the behavior of `subscribeOn` in a multithreaded context.
  * <p>
- * The program creates a Flux that emits numbers from 0 to 9, logs the emission,
- * and applies several `doFirst` and `doOnNext` operations to showcase the order
- * of execution and thread behavior.
+ * This class utilizes the `NumberFlux` utility to create a reactive stream of integers and subscribes
+ * multiple subscribers to the same stream using independent tasks that are executed on separate threads.
+ * The `subscribeOn` operator in `NumberFlux` ensures that the subscription process runs asynchronously
+ * on a bounded elastic thread pool.
  * <p>
- * Key Features:<br>
- * - Creates a Flux using `Flux.create`, with emitting logic in a loop.<br>
- * - Logs actions during Flux creation, subscription, and item processing using SLF4J Logger.<br>
- * - Uses the `subscribeOn(Schedulers.boundedElastic())` operator to specify
- * a bounded elastic thread pool for subscription.<br>
- * - Implements multiple asynchronous subscribers, each subscribing to the same Flux.<br>
- * - Demonstrates how the use of `subscribeOn` affects the thread on which
- * subscription logic is executed.<br>
- * - Makes the main thread sleep after starting asynchronous tasks to allow
- * adequate time for execution before program termination.<br>
+ * Key functionalities:<br>
+ * - Creates two subscribers for the same Flux, showing thread-specific behavior.<br>
+ * - Uses {@code Thread.ofPlatform()} to run subscription tasks on separate threads for concurrent execution.<br>
+ * - Pauses the main thread execution for a specified duration to allow the subscriptions to process.<br>
+ * - Logs subscriber-specific events such as item reception, completion, and errors (via {@code Util.subscriber}
+ * and {@code DefaultSubscriber}).
+ * <p>
+ * This class serves as an example to understand and demonstrate asynchronous execution, multithreading,
+ * and the `subscribeOn` operator in reactive programming with Project Reactor.
  */
 public class DemonstrateSubscribeOn {
 
-	private static final Logger log = LoggerFactory.getLogger(DemonstrateSubscribeOn.class);
-
 	public static void main(String[] args) {
-		var numberFlux = Flux.create(fluxSink -> {
-					for (int i = 0; i < 10; i++) {
-						log.info("Emitting number {}", i);
-						fluxSink.next(i);
-					}
-					fluxSink.complete();
-				})
-				.doOnNext(value -> log.info("Number generated: {}", value))
-				.doFirst(() -> log.info("Passing to a different Thread pool."))
-				.subscribeOn(Schedulers.boundedElastic())
-				.doFirst(() -> log.info("It will be printed inside the caller thread " +
-						"as now the subscriber will subscribe to the publisher"));
+		var numberFlux = NumberFlux.getNumberFlux();
 
 		Runnable firstTask = () -> numberFlux.subscribe(Util.subscriber("First Number Subscriber"));
 		Runnable secondTask = () -> numberFlux.subscribe(Util.subscriber("Second Number Subscriber"));
