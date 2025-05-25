@@ -29,9 +29,9 @@ import reactor.core.scheduler.Schedulers;
  * and subscribing for final consumption.<br>
  * - The backpressure is indirectly managed through the small buffer size and bounded scheduler.<br>
  */
-public class DemonstrateBackPressureHandling {
+public class DemonstrateAutomaticBackPressureHandling {
 
-	private static final Logger log = LoggerFactory.getLogger(DemonstrateBackPressureHandling.class);
+	private static final Logger log = LoggerFactory.getLogger(DemonstrateAutomaticBackPressureHandling.class);
 
 	static {
 		System.setProperty("reactor.bufferSize.small", "24");
@@ -52,7 +52,7 @@ public class DemonstrateBackPressureHandling {
 		// producer will publish items into the queue until the queue is at least 75% empty
 		producer
 				.publishOn(Schedulers.boundedElastic())
-				.map(DemonstrateBackPressureHandling::timeConsumingTask)
+				.map(DemonstrateAutomaticBackPressureHandling::timeConsumingTask)
 				.subscribe(Util.subscriber("Time consuming subscriber"));
 
 		Util.sleepSeconds(50L);
