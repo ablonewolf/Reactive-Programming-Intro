@@ -32,7 +32,7 @@ public class DemonstrateParallelExecution {
 				.map(DemonstrateParallelExecution::process)
 				.subscribe(Util.subscriber("Number Subscriber"));
 
-		Util.sleepSeconds(15L);
+		Util.sleepSeconds(8L);
 	}
 
 	private static Integer process(Integer number) {
