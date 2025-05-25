@@ -23,7 +23,8 @@ public class ExternalServiceClient extends AbstractHttpClient {
 		return this.httpClient.get()
 				.uri("/demo02/name/stream")
 				.responseContent()
-				.asString();
+				.asString()
+				.publishOn(Schedulers.boundedElastic());
 	}
 
 	public Flux<Integer> getPriceChanges() {
@@ -31,6 +32,7 @@ public class ExternalServiceClient extends AbstractHttpClient {
 				.uri("/demo02/stock/stream")
 				.responseContent()
 				.asString()
-				.map(Integer::parseInt);
+				.map(Integer::parseInt)
+				.publishOn(Schedulers.boundedElastic());
 	}
 }
