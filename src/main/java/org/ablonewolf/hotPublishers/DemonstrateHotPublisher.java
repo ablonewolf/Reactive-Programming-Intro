@@ -11,15 +11,15 @@ import org.ablonewolf.common.Util;
  * - A simulated movie streaming service (provided by MovieTheatre) emits a finite series of movie scenes.
  * - The stream is converted into a hot publisher by calling "publish()" and "autoConnect(0)".<br>
  * - Two subscribers, Sam and John, subscribe to the stream at different times,
- *   illustrating late subscription to a hot publisher.<br>
+ * illustrating late subscription to a hot publisher.<br>
  * - Demonstrates backpressure handling by using "onBackpressureDrop()"
- *   and explicit requests for a limited number of elements from the subscription.<br>
+ * and explicit requests for a limited number of elements from the subscription.<br>
  * <p>
  * Execution Behavior:<br>
  * - The first subscriber (Sam) subscribes after a delay and requests 20 elements.<br>
  * - The second subscriber (John) subscribes later and requests 15 elements.<br>
  * - The program introduces delays between subscriptions and uses "sleepSeconds"
- *   to simulate real-time streaming behavior.
+ * to simulate real-time streaming behavior.
  * <p>
  * This class is utilized to understand how hot publishers work with late subscribers
  * and how shared sequences are consumed in a reactive streams' ecosystem.
@@ -34,12 +34,18 @@ public class DemonstrateHotPublisher {
 
 		Util.sleepSeconds(2L);
 
-		movieStream.onBackpressureDrop().subscribe(sam);
+		movieStream.onBackpressureDrop()
+				.log()
+				.subscribe(sam);
+
 		sam.getSubscription().request(20L);
 
 		Util.sleepSeconds(15L);
 
-		movieStream.onBackpressureDrop().subscribe(john);
+		movieStream.onBackpressureDrop()
+				.log()
+				.subscribe(john);
+
 		john.getSubscription().request(15L);
 
 		Util.sleepSeconds(10L);
