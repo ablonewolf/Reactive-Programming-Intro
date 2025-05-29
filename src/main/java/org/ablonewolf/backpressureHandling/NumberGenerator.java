@@ -1,8 +1,11 @@
 package org.ablonewolf.backpressureHandling;
 
+import org.ablonewolf.common.Util;
 import org.slf4j.Logger;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
+
+import java.time.Duration;
 
 /**
  * Utility class for generating a reactive stream of increasing integer values.
@@ -40,6 +43,19 @@ public final class NumberGenerator {
 							sink.next(state);
 							return ++state;
 						})
+				.cast(Integer.class)
+				.subscribeOn(Schedulers.parallel());
+	}
+
+	public static Flux<Integer> getNumberProducerFromFluxCreate(Logger log) {
+		return Flux.create(fluxSink -> {
+					for (int i = 0; i < 500 && !fluxSink.isCancelled(); i++) {
+						log.info("Generating value {}", i);
+						fluxSink.next(i);
+						Util.sleep(Duration.ofMillis(50));
+					}
+					fluxSink.complete();
+				})
 				.cast(Integer.class)
 				.subscribeOn(Schedulers.parallel());
 	}
