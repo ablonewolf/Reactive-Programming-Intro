@@ -27,7 +27,10 @@ import org.ablonewolf.common.Util;
 public class DemonstrateHotPublisher {
 
 	public static void main(String[] args) {
-		var movieStream = MovieTheatre.getMovieStream().take(51).publish().autoConnect(0);
+		var movieStream = MovieTheatre.getMovieStream()
+				.take(51)
+				.publish()
+				.autoConnect(0);
 
 		var sam = new MovieWatcher("Sam");
 		var john = new MovieWatcher("John");
