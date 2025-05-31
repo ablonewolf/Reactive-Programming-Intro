@@ -24,13 +24,13 @@ public final class NumberGenerator {
 					sink.complete();
 				})
 				.cast(Integer.class)
-				.doOnSubscribe(subscription -> log.info("Subscribing to Large number stream"))
+				.transform(Util.getFluxLogger("Large Number Stream", log))
 				.delayElements(Duration.ofMillis(10));
 	}
 
 	public static Flux<Integer> getMiniNumberStream(Logger log) {
 		return Flux.just(1, 2)
-				.doOnSubscribe(subscription -> log.info("Subscribing to Mini number stream"))
+				.transform(Util.getFluxLogger("Mini Number Stream", log))
 				.delayElements(Duration.ofMillis(10));
 	}
 
