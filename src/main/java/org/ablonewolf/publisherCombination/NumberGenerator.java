@@ -1,5 +1,6 @@
 package org.ablonewolf.publisherCombination;
 
+import org.ablonewolf.common.Util;
 import org.slf4j.Logger;
 import reactor.core.publisher.Flux;
 
@@ -32,4 +33,43 @@ public final class NumberGenerator {
 				.doOnSubscribe(subscription -> log.info("Subscribing to Mini number stream"))
 				.delayElements(Duration.ofMillis(10));
 	}
+
+	public static Flux<Integer> getOddNumberStream(Logger log) {
+		return Flux.generate(
+						() -> 1,
+						(currentNumber, sink) -> {
+							while (currentNumber <= 100) {
+								if (currentNumber % 2 == 1) {
+									sink.next(currentNumber);
+									return currentNumber + 1;
+								}
+								currentNumber++;
+							}
+							sink.complete();
+							return currentNumber;
+						})
+				.cast(Integer.class)
+				.transform(Util.getFluxLogger("Odd Number Stream", log))
+				.delayElements(Duration.ofMillis(5));
+	}
+
+	public static Flux<Integer> getEvenNumberStream(Logger log) {
+		return Flux.generate(
+						() -> 1,
+						(currentNumber, sink) -> {
+							while (currentNumber <= 100) {
+								if (currentNumber % 2 == 0) {
+									sink.next(currentNumber);
+									return currentNumber + 1;
+								}
+								currentNumber++;
+							}
+							sink.complete();
+							return currentNumber;
+						})
+				.cast(Integer.class)
+				.transform(Util.getFluxLogger("Even Number Stream", log))
+				.delayElements(Duration.ofMillis(5));
+	}
+
 }
