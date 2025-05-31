@@ -5,8 +5,10 @@ import lombok.Getter;
 import org.reactivestreams.Subscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 
 import java.time.Duration;
+import java.util.function.UnaryOperator;
 
 public class Util {
 
@@ -46,6 +48,13 @@ public class Util {
 		} catch (InterruptedException e) {
 			printThreadInterruptedMessage(e);
 		}
+	}
+
+	public static <T> UnaryOperator<Flux<T>> getFluxLogger(String fluxName, Logger logger) {
+		return flux -> flux
+				.doOnSubscribe(subscription -> logger.info("Subscribed to flux {}", fluxName))
+				.doOnCancel(() -> logger.info("Cancelling {}.", fluxName))
+				.doOnComplete(() -> logger.info("{} completed.", fluxName));
 	}
 
 	private static void printThreadInterruptedMessage(InterruptedException e) {
