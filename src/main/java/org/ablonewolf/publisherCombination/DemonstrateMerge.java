@@ -39,6 +39,6 @@ public class DemonstrateMerge {
 		Flux.merge(oddNumberStream, evenNumberStream)
 				.subscribe(Util.subscriber("Number Stream Subscriber"));
 
-		Util.sleepSeconds(2L);
+		Util.sleepSeconds(3L);
 	}
 }

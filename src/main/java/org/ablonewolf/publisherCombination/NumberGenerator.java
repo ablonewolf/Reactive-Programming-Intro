@@ -50,7 +50,7 @@ public final class NumberGenerator {
 						})
 				.cast(Integer.class)
 				.transform(Util.getFluxLogger("Odd Number Stream", log))
-				.delayElements(Duration.ofMillis(5));
+				.delayElements(Duration.ofMillis(50));
 	}
 
 	public static Flux<Integer> getEvenNumberStream(Logger log) {
