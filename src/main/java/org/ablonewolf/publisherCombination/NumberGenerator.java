@@ -12,6 +12,9 @@ import java.time.Duration;
  */
 public final class NumberGenerator {
 
+	private NumberGenerator() {
+	}
+
 	public static Flux<Integer> getNumberStream(Logger log) {
 		return Flux.create(sink -> {
 					for (int i = 3; i <= 100; i++) {
@@ -28,8 +31,5 @@ public final class NumberGenerator {
 		return Flux.just(1, 2)
 				.doOnSubscribe(subscription -> log.info("Subscribing to Mini number stream"))
 				.delayElements(Duration.ofMillis(10));
-	}
-
-	private NumberGenerator() {
 	}
 }
