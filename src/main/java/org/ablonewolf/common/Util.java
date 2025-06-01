@@ -52,7 +52,7 @@ public class Util {
 
 	public static <T> UnaryOperator<Flux<T>> getFluxLogger(String fluxName, Logger logger) {
 		return flux -> flux
-				.doOnSubscribe(subscription -> logger.info("Subscribed to flux {}", fluxName))
+				.doOnSubscribe(subscription -> logger.info("Subscribed to {}", fluxName))
 				.doOnCancel(() -> logger.info("Cancelling {}.", fluxName))
 				.doOnComplete(() -> logger.info("{} completed.", fluxName));
 	}
