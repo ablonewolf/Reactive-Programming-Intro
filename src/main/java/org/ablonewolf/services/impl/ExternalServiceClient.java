@@ -35,4 +35,22 @@ public class ExternalServiceClient extends AbstractHttpClient {
 				.map(Integer::parseInt)
 				.publishOn(Schedulers.boundedElastic());
 	}
+
+	public Mono<String> getProductPrice(Integer productId) {
+		return this.httpClient.get()
+				.uri(String.format("/demo05/price/%d", productId))
+				.responseContent()
+				.asString()
+				.next()
+				.publishOn(Schedulers.boundedElastic());
+	}
+
+	public Mono<String> getProductReview(Integer productId) {
+		return this.httpClient.get()
+				.uri(String.format("/demo05/review/%d", productId))
+				.responseContent()
+				.asString()
+				.next()
+				.publishOn(Schedulers.boundedElastic());
+	}
 }
