@@ -11,46 +11,48 @@ import reactor.core.scheduler.Schedulers;
 public class ExternalServiceClient extends AbstractHttpClient {
 
 	public Mono<String> getProductName(Integer productId) {
-		return this.httpClient.get()
-				.uri(String.format("/demo01/product/%d", productId))
-				.responseContent()
-				.asString()
-				.next()
-				.publishOn(Schedulers.boundedElastic());
+		String uri = String.format("/demo01/product/%d", productId);
+		return this.getSingleAPIResponse(uri);
 	}
 
 	public Flux<String> getStreamOfNames() {
-		return this.httpClient.get()
-				.uri("/demo02/name/stream")
-				.responseContent()
-				.asString()
+		String uri = "/demo02/name/stream";
+
+		return this.getStreamOfAPIResponses(uri)
 				.publishOn(Schedulers.boundedElastic());
 	}
 
 	public Flux<Integer> getPriceChanges() {
-		return this.httpClient.get()
-				.uri("/demo02/stock/stream")
-				.responseContent()
-				.asString()
+		String uri = "/demo02/price/stream";
+
+		return this.getStreamOfAPIResponses(uri)
 				.map(Integer::parseInt)
 				.publishOn(Schedulers.boundedElastic());
 	}
 
 	public Mono<String> getProductPrice(Integer productId) {
+		String uri = String.format("/demo05/price/%d", productId);
+		return this.getSingleAPIResponse(uri);
+	}
+
+	public Mono<String> getProductReview(Integer productId) {
+		String uri = String.format("/demo05/review/%d", productId);
+		return this.getSingleAPIResponse(uri);
+	}
+
+	private Mono<String> getSingleAPIResponse(String path) {
 		return this.httpClient.get()
-				.uri(String.format("/demo05/price/%d", productId))
+				.uri(path)
 				.responseContent()
 				.asString()
 				.next()
 				.publishOn(Schedulers.boundedElastic());
 	}
 
-	public Mono<String> getProductReview(Integer productId) {
+	private Flux<String> getStreamOfAPIResponses(String path) {
 		return this.httpClient.get()
-				.uri(String.format("/demo05/review/%d", productId))
+				.uri(path)
 				.responseContent()
-				.asString()
-				.next()
-				.publishOn(Schedulers.boundedElastic());
+				.asString();
 	}
 }
