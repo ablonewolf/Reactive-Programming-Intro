@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.UnaryOperator;
 
 public class Util {
@@ -51,10 +52,25 @@ public class Util {
 	}
 
 	public static <T> UnaryOperator<Flux<T>> getFluxLogger(String fluxName, Logger logger) {
-		return flux -> flux
-				.doOnSubscribe(subscription -> logger.info("Subscribed to {}", fluxName))
-				.doOnCancel(() -> logger.info("Cancelling {}.", fluxName))
-				.doOnComplete(() -> logger.info("{} completed.", fluxName));
+		return flux -> {
+			AtomicLong itemCount = new AtomicLong(0);
+
+			return flux
+					.doFirst(() -> {
+						logger.info("Subscribed to {}", fluxName);
+						itemCount.set(0);
+					})
+					.doOnCancel(() -> logger.info("Cancelling {}.", fluxName))
+					.doOnNext(t -> itemCount.incrementAndGet())
+					.doOnComplete(() -> {
+						long count = itemCount.get();
+						if (count == 0) {
+							logger.info("{} completed after emitting zero items.", fluxName);
+						} else {
+							logger.info("{} completed after emitting {} item(s).", fluxName, count);
+						}
+					});
+		};
 	}
 
 	private static void printThreadInterruptedMessage(InterruptedException e) {
