@@ -1,6 +1,7 @@
 package org.ablonewolf.services.impl;
 
 import org.ablonewolf.common.AbstractHttpClient;
+import org.ablonewolf.model.ProductInfo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -30,14 +31,28 @@ public class ExternalServiceClient extends AbstractHttpClient {
 				.publishOn(Schedulers.boundedElastic());
 	}
 
-	public Mono<String> getProductPrice(Integer productId) {
+	private Mono<String> getProductPrice(Integer productId) {
 		String uri = String.format("/demo05/price/%d", productId);
 		return this.getSingleAPIResponse(uri);
 	}
 
-	public Mono<String> getProductReview(Integer productId) {
+	private Mono<String> getProductReview(Integer productId) {
 		String uri = String.format("/demo05/review/%d", productId);
 		return this.getSingleAPIResponse(uri);
+	}
+
+	/**
+	 * Retrieves product information for the given product ID, including the product's name, price, and review.
+	 * Combines the results from different sources into a single ProductInfo object.
+	 *
+	 * @param productId the unique identifier of the product whose information is to be fetched
+	 * @return a {@code Mono<ProductInfo>} containing the combined product information (name, price, review)
+	 */
+	public Mono<ProductInfo> getProductInfo(Integer productId) {
+		return Mono.zip(this.getProductName(productId), this.getProductPrice(productId),
+						this.getProductReview(productId))
+				.map(response ->
+							 new ProductInfo(response.getT1(), response.getT2(), response.getT3()));
 	}
 
 	private Mono<String> getSingleAPIResponse(String path) {
