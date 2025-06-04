@@ -4,6 +4,7 @@ import org.ablonewolf.common.Util;
 import org.slf4j.Logger;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -31,6 +32,15 @@ public class NameGenerator {
 				fluxSink.complete();
 			}
 		}));
+	}
+
+	public static Flux<String> getFiniteCountryNames(Integer count) {
+		return Flux.generate(synchronousSink -> {
+					var countryName = Util.getFaker().country().name();
+					synchronousSink.next(countryName);
+				}).cast(String.class)
+				.delayElements(Duration.ofMillis(100L))
+				.take(count);
 	}
 
 	private static String getName() {
