@@ -1,7 +1,7 @@
-package org.ablonewolf.flux;
+package org.ablonewolf.fluxExamples;
 
 import org.ablonewolf.common.Util;
-import org.ablonewolf.flux.helper.CountryNameGenerator;
+import org.ablonewolf.fluxExamples.helper.CountryNameGenerator;
 import reactor.core.publisher.Flux;
 
 /**

@@ -1,4 +1,4 @@
-package org.ablonewolf.flux;
+package org.ablonewolf.fluxExamples;
 
 import org.ablonewolf.common.Util;
 import org.ablonewolf.services.impl.FileReaderServiceUsingFluxGenerate;

@@ -1,4 +1,4 @@
-package org.ablonewolf.flux;
+package org.ablonewolf.fluxExamples;
 
 import org.ablonewolf.basic.subscriber.StringSubscriber;
 import org.ablonewolf.services.FileReaderService;

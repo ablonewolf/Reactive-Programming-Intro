@@ -1,4 +1,4 @@
-package org.ablonewolf.flux.helper;
+package org.ablonewolf.fluxExamples.helper;
 
 import org.ablonewolf.common.Util;
 import reactor.core.publisher.Flux;
