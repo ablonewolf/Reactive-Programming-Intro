@@ -2,12 +2,12 @@ package org.ablonewolf.fluxExamples;
 
 import org.ablonewolf.basic.subscriber.StringSubscriber;
 import org.ablonewolf.common.Util;
+import org.ablonewolf.fluxExamples.helper.NameGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
 
 /**
- * Demonstrates the use of Flux.create to generate a dynamic stream of data on demand.
+ * Demonstrates the use of {@link reactor.core.publisher.Flux#create} to generate a dynamic stream of data on demand.
  * The class showcases how to leverage backpressure and manual control in the data stream
  * generation process.
  * <p>
@@ -37,7 +37,7 @@ public class DemonstrateFluxCreateOnDemand {
 	public static void main(String[] args) {
 		var countryNameSubscriber = new StringSubscriber();
 
-		var countryNamePublisher = getCountryNamePublisher();
+		var countryNamePublisher = NameGenerator.getCountryNamesOnDemand(log);
 
 		countryNamePublisher.subscribe(countryNameSubscriber);
 
@@ -51,19 +51,5 @@ public class DemonstrateFluxCreateOnDemand {
 		countryNameSubscriber.getSubscription().cancel();
 		// the following line won't be executed since we already canceled the subscription
 		countryNameSubscriber.getSubscription().request(3);
-
-	}
-
-	private static Flux<String> getCountryNamePublisher() {
-		return Flux.create(fluxSink -> fluxSink.onRequest(request -> {
-			for (int i = 0; i < request && !fluxSink.isCancelled(); i++) {
-				var name = Util.getFaker().country().name();
-				log.info("Generating Country Name: {}", name);
-				fluxSink.next(name);
-			}
-			if (fluxSink.isCancelled()) {
-				fluxSink.complete();
-			}
-		}));
 	}
 }
