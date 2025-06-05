@@ -47,7 +47,7 @@ public class FileWriter {
 				.filter(item -> !writer.items.contains(item))
 				.flatMap(item -> Mono.fromRunnable(() -> {
 					writer.items.add(item);
-					writer.write(item); // Blocking, wrapped
+					writer.write(item);
 				}).subscribeOn(Schedulers.boundedElastic()))
 				.doFirst(writer::createFile)
 				.doFinally(signalType -> writer.closeFile())
