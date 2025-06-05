@@ -9,6 +9,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A utility class for writing content to a file located at a specified file path in a reactive programming
@@ -32,6 +34,7 @@ public class FileWriter {
 	private static final Logger log = LoggerFactory.getLogger(FileWriter.class);
 	private final Path path;
 	private BufferedWriter writer;
+	private final Set<String> items = new HashSet<>();
 
 	private FileWriter(Path path) {
 		this.path = path;
@@ -39,7 +42,12 @@ public class FileWriter {
 
 	public static Mono<Void> createAndWriteToFile(Flux<String> content, Path path) {
 		var writer = new FileWriter(path);
-		return content.doOnNext(writer::write)
+		return content
+				.filter(item -> !writer.items.contains(item))
+				.doOnNext(item -> {
+					writer.items.add(item);
+					writer.write(item);
+				})
 				.doFirst(writer::createFile)
 				.doFinally(signalType -> writer.closeFile())
 				.then();
