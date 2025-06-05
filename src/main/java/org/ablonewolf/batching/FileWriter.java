@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -33,8 +34,8 @@ public class FileWriter {
 
 	private static final Logger log = LoggerFactory.getLogger(FileWriter.class);
 	private final Path path;
-	private BufferedWriter writer;
 	private final Set<String> items = new HashSet<>();
+	private BufferedWriter writer;
 
 	private FileWriter(Path path) {
 		this.path = path;
@@ -44,10 +45,10 @@ public class FileWriter {
 		var writer = new FileWriter(path);
 		return content
 				.filter(item -> !writer.items.contains(item))
-				.doOnNext(item -> {
+				.flatMap(item -> Mono.fromRunnable(() -> {
 					writer.items.add(item);
-					writer.write(item);
-				})
+					writer.write(item); // Blocking, wrapped
+				}).subscribeOn(Schedulers.boundedElastic()))
 				.doFirst(writer::createFile)
 				.doFinally(signalType -> writer.closeFile())
 				.then();
