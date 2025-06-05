@@ -34,3 +34,4 @@ build/
 
 ### redundant ###
 src/main/resources/new_file.txt
+src/main/resources/country/**
