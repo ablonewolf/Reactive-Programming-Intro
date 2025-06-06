@@ -1,7 +1,7 @@
 package org.ablonewolf.fluxExamples;
 
 import org.ablonewolf.common.Util;
-import org.ablonewolf.fluxExamples.helper.CountryNameGenerator;
+import org.ablonewolf.common.CountryNameGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;

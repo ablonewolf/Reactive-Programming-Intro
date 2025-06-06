@@ -2,7 +2,7 @@ package org.ablonewolf.fluxExamples;
 
 import org.ablonewolf.basic.subscriber.StringSubscriber;
 import org.ablonewolf.common.Util;
-import org.ablonewolf.fluxExamples.helper.NameGenerator;
+import org.ablonewolf.common.NameGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

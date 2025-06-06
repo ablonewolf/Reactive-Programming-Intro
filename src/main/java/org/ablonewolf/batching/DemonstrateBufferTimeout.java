@@ -1,7 +1,7 @@
 package org.ablonewolf.batching;
 
 import org.ablonewolf.common.Util;
-import org.ablonewolf.fluxExamples.helper.NameGenerator;
+import org.ablonewolf.common.NameGenerator;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;

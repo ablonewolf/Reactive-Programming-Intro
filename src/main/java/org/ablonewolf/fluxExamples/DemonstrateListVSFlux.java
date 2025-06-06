@@ -1,7 +1,7 @@
 package org.ablonewolf.fluxExamples;
 
 import org.ablonewolf.common.Util;
-import org.ablonewolf.fluxExamples.helper.NameGenerator;
+import org.ablonewolf.common.NameGenerator;
 
 /**
  * demonstrating the difference between the list and flux

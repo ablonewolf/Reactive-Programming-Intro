@@ -2,7 +2,7 @@ package org.ablonewolf.batching;
 
 import org.ablonewolf.common.CountryData;
 import org.ablonewolf.common.Util;
-import org.ablonewolf.fluxExamples.helper.NameGenerator;
+import org.ablonewolf.common.NameGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;

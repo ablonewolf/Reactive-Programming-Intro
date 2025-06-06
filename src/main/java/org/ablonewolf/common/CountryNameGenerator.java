@@ -1,6 +1,5 @@
-package org.ablonewolf.fluxExamples.helper;
+package org.ablonewolf.common;
 
-import org.ablonewolf.common.Util;
 import reactor.core.publisher.FluxSink;
 
 import java.util.function.Consumer;
