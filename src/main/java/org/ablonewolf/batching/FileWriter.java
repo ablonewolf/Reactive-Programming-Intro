@@ -45,7 +45,7 @@ public class FileWriter {
 		var writer = new FileWriter(path);
 		return content
 				.filter(item -> !writer.items.contains(item))
-				.flatMap(item -> Mono.fromRunnable(() -> {
+				.concatMap(item -> Mono.fromRunnable(() -> {
 					writer.items.add(item);
 					writer.write(item);
 				}).subscribeOn(Schedulers.boundedElastic()))
