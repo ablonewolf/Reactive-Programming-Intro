@@ -71,4 +71,19 @@ public final class NumberGenerator {
 				.delayElements(Duration.ofMillis(5));
 	}
 
+	public static Flux<Integer> getFiniteNumberOfStream(Logger log, Integer maxNumber) {
+		return Flux.generate(
+						() -> 1,
+						(currentNumber, sink) -> {
+							sink.next(currentNumber);
+							++currentNumber;
+							if (currentNumber > maxNumber) {
+								sink.complete();
+							}
+							return currentNumber;
+						})
+				.cast(Integer.class)
+				.transform(Util.getFluxLogger("Number Stream", log));
+	}
+
 }
