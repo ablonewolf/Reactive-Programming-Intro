@@ -1,5 +1,6 @@
 package org.ablonewolf.publisherCombination;
 
+import org.ablonewolf.common.NumberGenerator;
 import org.ablonewolf.common.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
