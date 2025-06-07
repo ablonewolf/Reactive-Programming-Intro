@@ -2,6 +2,7 @@ package org.ablonewolf.common;
 
 import org.slf4j.Logger;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.List;
@@ -40,6 +41,10 @@ public class NameGenerator {
 				}).cast(String.class)
 				.delayElements(Duration.ofMillis(100L))
 				.take(count);
+	}
+
+	public static Mono<String> getSingleCountryName() {
+		return Mono.defer(() -> Mono.fromSupplier(() -> Util.getFaker().country().name()));
 	}
 
 	private static String getName() {
