@@ -1,4 +1,4 @@
-package org.ablonewolf.batching;
+package org.ablonewolf.batchingOperators;
 
 import org.ablonewolf.common.BookOrderGenerator;
 import org.ablonewolf.common.Util;

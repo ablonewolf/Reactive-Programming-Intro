@@ -1,4 +1,4 @@
-package org.ablonewolf.batching;
+package org.ablonewolf.batchingOperators;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

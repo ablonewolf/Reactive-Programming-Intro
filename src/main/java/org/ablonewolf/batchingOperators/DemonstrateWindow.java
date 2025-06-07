@@ -1,4 +1,4 @@
-package org.ablonewolf.batching;
+package org.ablonewolf.batchingOperators;
 
 import org.ablonewolf.common.Util;
 import org.ablonewolf.common.NameGenerator;
