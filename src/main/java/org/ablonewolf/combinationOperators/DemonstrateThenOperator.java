@@ -1,4 +1,4 @@
-package org.ablonewolf.publisherCombination;
+package org.ablonewolf.combinationOperators;
 
 import org.ablonewolf.common.Util;
 import org.ablonewolf.model.ProductInfo;
