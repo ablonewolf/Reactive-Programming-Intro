@@ -6,6 +6,7 @@ import org.reactivestreams.Subscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicLong;
@@ -62,6 +63,7 @@ public class Util {
 					})
 					.doOnCancel(() -> logger.info("Cancelling {}.", fluxName))
 					.doOnNext(t -> itemCount.incrementAndGet())
+					.doOnError(ex -> logger.error("Error in {}, details: {}", fluxName, ex.getMessage()))
 					.doOnComplete(() -> {
 						long count = itemCount.get();
 						if (count == 0) {
@@ -71,6 +73,13 @@ public class Util {
 						}
 					});
 		};
+	}
+
+	public static <T> UnaryOperator<Mono<T>> loggerForMono(String name, Logger log) {
+		return publisher -> publisher
+				.doOnCancel(() -> log.info("Cancelled {}", name))
+				.doOnSubscribe(sub -> log.info("Subscribed to {}", name))
+				.doOnError(ex -> log.error("Error in {}, details: {}", name, ex.getMessage()));
 	}
 
 	private static void printThreadInterruptedMessage(InterruptedException e) {
