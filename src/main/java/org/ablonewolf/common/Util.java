@@ -31,6 +31,10 @@ public class Util {
 		return new DefaultSubscriber<>(name);
 	}
 
+	public static <T> Subscriber<T> subscriber(String name, String itemName) {
+		return new DefaultSubscriber<>(name, itemName);
+	}
+
 	/**
 	 * make the main thread sleep for a certain amount of time
 	 *

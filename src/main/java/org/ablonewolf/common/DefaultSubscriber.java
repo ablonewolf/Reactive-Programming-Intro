@@ -13,9 +13,15 @@ public class DefaultSubscriber<T> implements Subscriber<T> {
 
 	public static final Logger logger = LoggerFactory.getLogger(DefaultSubscriber.class);
 	private final String name;
+	private final String itemName;
 
 	private boolean receivedItem = false;
 	private boolean completed = false;
+
+	public DefaultSubscriber(String name) {
+		this.name = name;
+		this.itemName = "item";
+	}
 
 	@Override
 	public void onSubscribe(Subscription subscription) {
@@ -29,7 +35,7 @@ public class DefaultSubscriber<T> implements Subscriber<T> {
 		if (item instanceof List && ((List<?>) item).isEmpty()) {
 			logger.info("{} received an empty list.", this.name);
 		} else {
-			logger.info("{} received item: {}.", this.name, item);
+			logger.info("{} received {}: {}.", this.name, this.itemName, item);
 		}
 	}
 
@@ -42,7 +48,7 @@ public class DefaultSubscriber<T> implements Subscriber<T> {
 	@Override
 	public void onComplete() {
 		if (!receivedItem && !completed) {
-			logger.info("{} did not receive any item.", this.name);
+			logger.info("{} did not receive any {}.", this.name, this.itemName);
 		} else {
 			logger.info("{} completed receiving requests.", this.name);
 		}
