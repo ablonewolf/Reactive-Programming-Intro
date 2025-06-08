@@ -6,6 +6,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 public class NameGenerator {
@@ -45,6 +46,18 @@ public class NameGenerator {
 
 	public static Mono<String> getSingleCountryName() {
 		return Mono.defer(() -> Mono.fromSupplier(() -> Util.getFaker().country().name()));
+	}
+
+	public static Mono<String> getSingleCountryNameWithLimitCount(Logger log) {
+		AtomicInteger itemCount = new AtomicInteger(1);
+		return Mono.defer(() -> Mono.fromSupplier(() -> {
+					if (itemCount.getAndIncrement() > 8) {
+						itemCount.set(1);
+						throw new RuntimeException("Exceeded maximum number of country name retrievals");
+					}
+					return Util.getFaker().country().name();
+				}))
+				.transform(Util.loggerForMono("Country Publisher", log));
 	}
 
 	private static String getName() {
