@@ -2,7 +2,8 @@
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} %-5level [%t{default:-"Unnamed Thread"}] %cyan(%logger) : %m%n</pattern>
+            <pattern>
+                <![CDATA[%d{HH:mm:ss.SSS} %highlight(%-5level){ERROR=red, INFO=cyan, DEBUG=cyan, TRACE=cyan, WARN=cyan} [%highlight(%t{default:-"Unnamed Thread"}){ERROR=red, INFO=cyan, DEBUG=cyan, TRACE=cyan, WARN=cyan}] %highlight(%logger){ERROR=red, INFO=cyan, DEBUG=cyan, TRACE=cyan, WARN=cyan} : %m%n]]></pattern>
         </encoder>
     </appender>
     <root level="INFO">
