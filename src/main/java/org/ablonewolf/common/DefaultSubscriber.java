@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 public class DefaultSubscriber<T> implements Subscriber<T> {
@@ -50,7 +51,11 @@ public class DefaultSubscriber<T> implements Subscriber<T> {
 		if (!receivedItem && !completed) {
 			logger.info("{} did not receive any {}.", this.name, this.itemName);
 		} else {
-			logger.info("{} completed receiving requests.", this.name);
+			if (Objects.equals(itemName, "item")) {
+				logger.info("{} completed receiving requests.", this.name);
+			} else {
+				logger.info("{} completed receiving {}s.", this.name, this.itemName);
+			}
 		}
 		completed = true;
 	}
